@@ -424,8 +424,7 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-We utilize the fpga-zynq repository provided by University of California, Berkeley to learn more about the RISC-V processor. 
-The abstract goes here.
+We utilize repositories provided by University of California, Berkeley to learn more about the RISC-V processor. 
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -467,7 +466,7 @@ RISC-V, ISA, Zedboard, Zynq, Rocket-Chip
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
 \IEEEPARstart{T}{he} RISC-V open instruction set architecture commisioned in 2010 has been making waves in the in world of open hardware within both the academic commuinity and industry. As students pursuant of masters degrees in computer engineering, we investiage the RISC-V processor through venues that we are already familiar with: Field Programmable Gate Arrays (FGPAs).
-\newline The Rocket-Chip generator allows for devloping a system-on-chip (SOC) design rapidly.\cite{Asanović:EECS-2016-17}
+\newline The Rocket-Chip generator allows for devloping a system-on-chip (SOC) design rapidly.\cite{Asanović:EECS-2016-17}. We utilize the fpga-zynq\cite{fpga-zynq} repository to target a Zynq-based Zedboard FPGA development platform to instatiate and test out a RISV-V implementation.
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
 
@@ -506,7 +505,7 @@ On the Zedboard, the Rocket core interfaces with the ARM processing system via t
 \end{figure}
 In this block diagram we attached a Xilinx supplied AXI GPIO IP core. At the time, this method seemed to be the easiest for making a peripheral available to the RISC-V processor. The GPIO could easily then be assigned an address using the Block Diagram.
 While we were successful in generating a new bitstream for the zedboard, we were not successful in actually manipulating the GPIO device. When running an executable using the Proxy Kernel, an error is reported that an illegal memory access what attempted. This result was also confirmed using the Spike simulator.\newline
-Further reflection on this brings to light that peripherals should no be routed via cachable channels. This is confirmed with the GPIO implementation of a similar SoC effort, lowRISC.  
+Upon researching further if there were similar efforts to attach peripherals to the processor, we discovered that the lowRISC project provides an exampled on how peripherals should be added\cite{lowrisc}. In the diagrams they provided, we now understand that peripherals should no be routed via cachable channels.
 
     
 \section{Modify RISC-V ISA}
@@ -514,6 +513,11 @@ Generate the processor RTL from the higher level languages provided, determine t
 The Rocket Chip generator relies on a Berkeley developed language extension of the Scala programming language, called Chisel. Using Chisel, the functional block are hardware are described for all the components required in the rocket core. Chisel relies heavily on object-oriented principles such as inheritance and polymorphism. Hardware configurations are developed by instantiating base modules and then including options by overriding the default parameters. As you would expect, the hard ware is described and connected hierarchically.  
 Subsubsection text here.
 \section{Document Results}
+
+
+
+
+
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
