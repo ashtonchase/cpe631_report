@@ -509,8 +509,12 @@ Upon researching further if there were similar efforts to attach peripherals to 
 
     
 \section{Rocket Chip Modification}
-The Rocket Chip generator relies on a Berkeley developed language extension of the Scala programming language, called Chisel\cite{bachrach2012chisel}. Using Chisel, the functional block of hardware are described for all the components required in the rocket core. Comparted to traditional hardware description languages, such as Verilog or VDHL, Chisel relies heavily on object-oriented principles such as inheritance and polymorphism. Hardware configurations are developed by instantiating base modules and then including options by overriding the default parameters. As you would expect, the hard ware is described and connected hierarchically.  
-Subsubsection text here.
+The Rocket Chip generator relies on a Berkeley developed language extension of the Scala programming language, called Chisel\cite{bachrach2012chisel}. Using Chisel, functional blocks of hardware are described for all the components required in the rocket core. Compared to traditional hardware description languages, such as Verilog or VDHL, Chisel relies heavily on object-oriented principles such as inheritance and polymorphism. Hardware configurations are developed by instantiating base modules and then including options by overriding the default parameters. As you would expect, the hard ware is described and connected hierarchically.\newline
+Using chisel we were sucessfuly in modifying the number of cores instantiated in the design. This can easily be performed by adding the following bolded text .../rocketchip/Configs.scala:
+\newline
+\tt{class DefaultFPGAConfig extends \textbf{++ new WithNCores(2)} Config(new FPGAConfig ++ new BaseConfig)}
+\newline
+  
 \section{Document Results}
 
 
