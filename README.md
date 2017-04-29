@@ -31,6 +31,7 @@ To generate PDF files instead of dvi files, add the following to your ```~/.emac
 ### Generating output
 
 To generate the output in Emacs, includeing update the the bibliogragphy, run the following sequence:
+
 ```C-c C-f``` , ```C-c TAB```, ``` C-c C-f```
 
 ```C-c C-f``` generates the initial pdf, but also generates a ```cpe.aux``` file that is then used by bibtex to supply the needed references from the [cpe631.bib](https://github.com/ashtonchase/cpe631_report/blob/master/cpe631.bib) file. 
