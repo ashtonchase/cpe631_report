@@ -504,7 +504,7 @@ On the Zedboard, the Rocket core interfaces with the ARM processing system via t
 \label{fig_sim}
 \end{figure}
 In this block diagram we attached a Xilinx supplied AXI GPIO IP core. At the time, this method seemed to be the easiest for making a peripheral available to the RISC-V processor. The GPIO could easily then be assigned an address using the Block Diagram.
-While we were successful in generating a new bitstream for the zedboard, we were not successful in actually manipulating the GPIO device. When running an executable using the Proxy Kernel, an error is reported that an illegal memory access what attempted. This result was also confirmed using the Spike simulator.\newline
+While we were successful in generating a new bitstream for the zedboard, we were not successful in actually manipulating the GPIO device. When running an executable using the Proxy Kernel\cite{pk}, an error is reported that an illegal memory access what attempted. This result was also confirmed using the Spike simulator.\newline
 Upon researching further if there were similar efforts to attach peripherals to the processor, we discovered that the lowRISC project provides an exampled on how peripherals should be added\cite{lowrisc}. In the diagrams they provided, we now understand that peripherals should no be routed via cachable channels.
 
     
