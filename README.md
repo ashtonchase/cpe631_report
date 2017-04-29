@@ -7,8 +7,10 @@
 [IEEEtran.cls](https://github.com/ashtonchase/cpe631_report/blob/master/IEEEtran.cls) is the IEEE class file used for formatting.
 
 
-## Support
-Add the following to your ```~/.emacs``` file to use pdflatex instead of plain latex:
+## Emacs Support
+
+### pdflatex
+To generate PDF files instead of dvi files, add the following to your ```~/.emacs``` file to use pdflatex instead of plain latex:
 
 ```
 (custom-set-variables
@@ -24,3 +26,11 @@ Add the following to your ```~/.emacs``` file to use pdflatex instead of plain l
  ;; If there is more than one, they won't work right.                                                                        
  )
 ```
+
+
+### Generating output
+
+To generate the output in Emacs, includeing update the the bibliogragphy, run the following sequence:
+```C-c C-f``` , ```C-c TAB```, ``` C-c C-f```
+
+```C-c C-f``` generates the initial pdf, but also generates a ```cpe.aux``` file that is then used by bibtex to supply the needed references from the [cpe631.bib](https://github.com/ashtonchase/cpe631_report/blob/master/cpe631.bib) file. 
