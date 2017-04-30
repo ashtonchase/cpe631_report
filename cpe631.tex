@@ -473,24 +473,41 @@ The goals of our project are to investigate the source material provided by UC B
 
 \subsubsection{Document Results}
 
+\section{RISC-V Overview}
+RISC-V is an open risc instruction set architecture (ISA) commissioned in 2010 by a research team at UC Berkeley [citation needed]. The stated goal of the team was to create a free and open ISA for commercial, educational, and open source settings. RISC-V is under the BSD (Berkeley Software Distribution) Licence, which is similar to the LGPL and is governed by the RISC-V foundation. The foundation is intended to maintain the ISA in the long term and guide it toward being an industry standard.\newline
+RISC-V is not the first attempt at an open ISA. There have been others, but RISC-V appears to be positioned to succeed where others failed. The RISC-V foundation is important. They can act in the same way a company, like ARM Holdings, and will continue to improve the ISA, but will not monetizing it. Free hardware designs are also helpful. Other open ISAs have failed because they were impractical to implement. Potential adopters needed to either design their own cores or try to implement untested designs. Finally, educators are eager to adopt this ISA. The possibility of free-to-use ISA and hardware designs would allow us to use real assembly and real hardware to teach architecture. This would create demand and would flood the design world with scientists and engineers that know the ISA and will choose to use it due to familiarity.
 
+% Generates some bullet points
+\subsection{Design Benefits}
+\begin{itemize}
+\item BSD License:\newline
+  Allows proprietary derivative work
+\item Microarchitecture-Agnostic:\newline
+  The ISA is independent of the application workload. It can be scaled to cover everything from microcontrollers to warehouse-scale servers.
+\item 128 Bit:\newline
+  Comes with fully-functional 128-bit design. This does not appear to be commercially supported and may be of use soon in large-scale cloud computing applications.
+\item Software Support:\newline
+  There is a free software suite for application development. This will be discussed later.
+\end{itemize}
 
 \section{Pre-Built Image}
-Load RISC-V processor onto Xilinx Zedboard. Interrogate the pre-build configuration of the processor. Document any nuances associated with this. At this level a demonstration of cross-compiling a test program to load onto the processor will be done to execute a simple benchmark, for instance the matrix-multiplication program.\newline
+It is possible to load a pre-built RISC-V core design onto a Xilinx Zedboard. This is a basic design that allows us the toolchain to be tested and allows for the execution of benchmarks. This configuration was investigated and a simple benchmark was compiled using the toolchain and run on the core. 
+
+\newline [TALK ABOUT MATRIX/MATRIX MULTIPLICATION?]
 
 \subsection{Image Makeup}
 The pre-built configuration is a simple design that can be instantiated on the Zedboard. It is a single core design for the purpose of rapidly testing and running RISC-V in hardware. The basic design is an RV64G core. This means that it is a RISC-V (RV) 64 bit core the General Purpose (G) extension set. The general purpose set can be thought of as a ``normal'' processor. We will cover the details in the [WHAT SECTION? RC Generator?] later. \newline
 Surrounding the core in this design is a split L1 cache for instructions and data. These caches are designed to be simple and save FPGA space. Both are 4-way set associative with 64 sets per cache and 8 TLB entries. They are non-error correcting, use the random policy for replacement, and do not use scratchpad memory to store calculations. \newline
-This design does not contain an L2 cache due to size and complexity, so after L1, the processor must go directly to main memory. For main memory, the processor splits the 512MB of on board Zedboard DDR memory in half, utilizing 256MB for its needs.\newline
+This design does not contain an L2 cache due to size and complexity, so after L1, the processor must go directly to main memory. For main memory, the processor splits the 512MB of on board Zedboard DDR memory in half, utilizing 256MB for its needs.
 
 \subsection{Toolchain}
-To complete this goal, cross-compilation was necessary. To allow for this, Berkeley has designed and released the sources for RISC-V variants of the LLVM and GNU toolchains. These are included in the RISC-V repository under rocket-chip/riscv-tools. They are available as a standalone or as a link within the fpga-zynq project for Zynq boards. The toolchains can be installed several ways, but for performance and simple installation, we recommend using the provided build scripts in the riscv-tools directory. Instructions for installing the toolchain can be found in [Where exactly? Should we write and append, do it inline, or link theirs?]. Once built on an x86 system, the tools are named like: riscv64-unknown-elf-g++ and can be installed anywhere on that system. These toolchains appear to be complete and operate identically to their mainstream versions. As an example, compilation can be completed using the normal formats: <path to tools>/riscv64-unknown-elf-g++ main.cpp -o executable. \newline While the toolchains are being built, some additional useful tools are constructed:\newline
+To complete this goal, cross-compilation was necessary. To allow for this, Berkeley has designed and released the sources for RISC-V variants of the LLVM and GNU toolchains. These are included in the RISC-V repository under rocket-chip/riscv-tools. They are available as a standalone or as a link within the fpga-zynq project for Zynq boards. The toolchains can be installed several ways, but for performance and simple installation, we recommend using the provided build scripts in the riscv-tools directory. Instructions for installing the toolchain can be found in [Where exactly? Should we write and append, do it inline, or link theirs?]. Once built on an x86 system, the tools are named like: riscv64-unknown-elf-g++ and can be installed anywhere on that system. These toolchains appear to be complete and operate identically to their mainstream versions. As an example, compilation can be completed using the normal formats: <path to tools>/riscv64-unknown-elf-g++ main.cpp -o executable. \newline \newline While the toolchains are being built, some additional useful tools are constructed:\newline
 
 \subsubsection{Spike and pk}
-The executable for spike is built here. Spike is the RISC-V open source cross-platform simulator designed by Berkeley. It allows for execution of RISC-V binaries on an arbitrary platform through emulation. This is paired with a program called pk (proxy kernel). pk is designed to format and provide RISC-V instructions to either a kernel-less core or the spike program for execution and to receive and handle output from the core.\newline
+The executable for spike is built here. Spike is the RISC-V open source cross-platform simulator designed by Berkeley. It allows for execution of RISC-V binaries on an arbitrary platform through emulation. This is paired with a program called pk (proxy kernel). pk is designed to format and provide RISC-V instructions to either a kernel-less core or the spike program for execution and to receive and handle output from the core. \newline
 
 \subsubsection{Benchmarks}
-Embedded in this repository are a series of RISC-V benchmarks compiled and ready to be executed on a system with a RISC-V core. \newline
+Embedded in this repository are a series of RISC-V benchmarks compiled and ready to be executed on a system with a RISC-V core. 
 
 \section{THESE THINGS NEED A GOOD PLACE}
 
