@@ -461,7 +461,7 @@ RISC-V, ISA, Zedboard, Zynq, Rocket-Chip
 %\hfill August 26, 2015
 
 \subsection{Project Goals}
-The goals of our project are to investigate the source material provided by UC Burkeley's Rocket Chip Generator. Specifically, we will recreate some of their results using their provided source code and documentation hosted at (https://github.com/ucb-bar/fpga-zynq). Our goals are listed in order or complexity. The intent was that as each goal is achieved, efforts will be focus on the next item; however, not all goals very fully achievable.
+The goals of our project are to investigate the source material provided by UC Berkeley's Rocket Chip Generator. Specifically, we will recreate some of their results using their provided source code and documentation hosted at (https://github.com/ucb-bar/fpga-zynq). Our goals are listed in order or complexity. The intent was that as each goal is achieved, efforts will be focus on the next item; however, not all goals very fully achievable.
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 
@@ -475,9 +475,27 @@ The goals of our project are to investigate the source material provided by UC B
 
 
 
-\section{Prebuilt Image}
+\section{Pre-Built Image}
 Load RISC-V processor onto Xilinx Zedboard. Interrogate the pre-build configuration of the processor. Document any nuances associated with this. At this level a demonstration of cross-compiling a test program to load onto the processor will be done to execute a simple benchmark, for instance the matrix-multiplication program.\newline
 
+\subsection{Image Makeup}
+The pre-built configuration is a simple design that can be instantiated on the Zedboard. It is a single core design for the purpose of rapidly testing and running RISC-V in hardware. The basic design is an RV64G core. This means that it is a RISC-V (RV) 64 bit core the General Purpose (G) extension set. The general purpose set can be thought of as a ``normal'' processor. We will cover the details in the [WHAT SECTION? RC Generator?] later. \newline
+Surrounding the core in this design is a split L1 cache for instructions and data. These caches are designed to be simple and save FPGA space. Both are 4-way set associative with 64 sets per cache and 8 TLB entries. They are non-error correcting, use the random policy for replacement, and do not use scratchpad memory to store calculations. \newline
+This design does not contain an L2 cache due to size and complexity, so after L1, the processor must go directly to main memory. For main memory, the processor splits the 512MB of on board Zedboard DDR memory in half, utilizing 256MB for its needs.\newline
+
+\subsection{Toolchain}
+To complete this goal, cross-compilation was necessary. To allow for this, Berkeley has designed and released the sources for RISC-V variants of the LLVM and GNU toolchains. These are included in the RISC-V repository under rocket-chip/riscv-tools. They are available as a standalone or as a link within the fpga-zynq project for Zynq boards. The toolchains can be installed several ways, but for performance and simple installation, we recommend using the provided build scripts in the riscv-tools directory. Instructions for installing the toolchain can be found in [Where exactly? Should we write and append, do it inline, or link theirs?]. Once built on an x86 system, the tools are named like: riscv64-unknown-elf-g++ and can be installed anywhere on that system. These toolchains appear to be complete and operate identically to their mainstream versions. As an example, compilation can be completed using the normal formats: <path to tools>/riscv64-unknown-elf-g++ main.cpp -o executable. \newline While the toolchains are being built, some additional useful tools are constructed:\newline
+
+\subsubsection{Spike and pk}
+The executable for spike is built here. Spike is the RISC-V open source cross-platform simulator designed by Berkeley. It allows for execution of RISC-V binaries on an arbitrary platform through emulation. This is paired with a program called pk (proxy kernel). pk is designed to format and provide RISC-V instructions to either a kernel-less core or the spike program for execution and to receive and handle output from the core.\newline
+
+\subsubsection{Benchmarks}
+Embedded in this repository are a series of RISC-V benchmarks compiled and ready to be executed on a system with a RISC-V core. \newline
+
+\section{THESE THINGS NEED A GOOD PLACE}
+
+\subsubsection{Extensions}
+Extensions are a mechanism used by the chip generator to allow rocket cores to be as simple or as complex as needed to complete tasks. For convenience many commonly used extensions are available to designers pre-written. The ``G'' extension is a combination of the extension for Integer (I), Multiply/Divide (M), Atomic (A), Floating Point (F), and Double Precision (D). This could be known as RV64IMAFD, but because these are so common, they are combined as G.\newline 
 
 \section{FPGA Project}
 Using the supplied makefiles, a Xilinx Vivado project was generated along with the default Rocket Chip configuration. With this we investigated the design that was targeting the Zedboard.
@@ -711,12 +729,12 @@ The authors would like to thank...
 % or if you just want to reserve a space for a photo:
 
 \begin{IEEEbiographynophoto}{Ian Swepston}
-Biography text here. With Photo
+ Received his B.S. in Computer Engineering from Clemson University in 2015. He is currently pursuing a Master's Degree in Computer Engineering at the University of Alabama in Huntsville. He currently works as a Computer Engineer at Dynetics, Inc. in Huntsville.
 \end{IEEEbiographynophoto}
 
 % if you will not have a photo at all:
 \begin{IEEEbiographynophoto}{Ashton Johnson}
- received his B.E. degree in wireless engineering from Auburn University in 2011. He is currently seeing his Master's degree in computer engineering at the University of Alabama in Huntsville. He current works as an electrical engineer at Dynetics, Inc. in Huntsville. 
+ received his B.E. degree in wireless engineering from Auburn University in 2011. He is currently seeking his Master's degree in computer engineering at the University of Alabama in Huntsville. He current works as an electrical engineer at Dynetics, Inc. in Huntsville. 
 \end{IEEEbiographynophoto}
 
 % insert where needed to balance the two columns on the last page with
