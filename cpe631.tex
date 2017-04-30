@@ -354,7 +354,7 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{An Investigation of RISC-V ISA\\using Rocket-Chip}
+\title{Investigation of RISC-V ISA\\using Rocket-Chip}
 %
 %
 % author names and IEEE memberships
@@ -526,6 +526,20 @@ class DefaultFPGADualCoreConfig}\rm{}
 The Rocket-Chip generator provides a framework for developeing custom co-processors that are housed in the processing coreplex, allowing for low latency access to the co-processor. These are the Rocket Custom Coprocessor (RoCC). These coprocessors utilize reserved opcodes in the instruction set. To get started with the accelerators, three example coprocessors are already defined in the repository. These are defined down in .../rocket/rocc.Scala. We were sucessful in instantiating these cores, and provided \tt{class DefaultFPGARoccConfig}\rm{} to make these easier to implmement. Resource utilization of the custom coprocessors is negligible.
 
 We ran into difficulties when developing software for targeting the custom coprocessors. Documentation for how to target these is absent, so we were left to seaching user forums on the internet to see guidance. After much research, we were still not sucessful in using the custom opcodes. We discovered in previous iterations of the gnu-toolchain, the custome(0/1/2/3) opcodes were supported. Since then, the team has removed default support for the opcodes, and now require the use of pseudo opcodes\cite{psuedocode}. 
+
+\section{Notable Failures}
+Throughout this process, we experienced success; however, we experienced even more failures. We considering these things no to disguise, but to bring forward so that follow-on efforts might not be able to resolve these issues, or at least be aware of them.
+
+\subsubsection{Custom Opcodes}
+As mentioned previously, we were unsuccessful in utilizing custom opcodes, event those designed as pre-planned custom opcodes. 
+
+\subsubsection{Deploying Linux}
+Through multiple paths we were not able to rebuild GNU/Linux and execute it on the processor. This included both on the development board and the Spike simulator. To give background to this, The Berkeley Bootloader (BBL), which is found in the riscv-pk repository\cite{pk}, is an executable that is used to load in an ELF file into the processor. Most notably, this is used to boot GNU/Linux. When compiling the BBL, the Linux ELF file must be specified, otherwise and dummy ELF file is included. The output of the BBL build process is a single executable that contains the kernel.
+
+We were successful in building the Linux kernel using the riscv-linux repository\cite{linux}. Additionally, we were successful in building a GNU/Linux distribution using the Yocto Pocky and the recipes provided in riscv-poky\cite{poky}. For poky, we validated the build using the Spike simulator and BBL that is compiled at alongside the kernel Poky, along with the OS. <MORE TO COME> 
+
+
+\subsubsection{Custom Opcodes}
 
 \section{Document Results}
 For documentation , we are providing an Oracle VMWare disk image and three tutorials to reach each of the three goals listed above using the virtual machine provided. The disk image is an Ubuntu 16.04 distribution with all the required repositories and examples necessary to replicate our goals. We felt this was the best approach for allowing others to verify and replicate our results. Additionally, instructions for the virtual machine getting a new virtual machine up and running using the virtual disk provided. While this will not provided the fastest avenue for building the different items required, it provided a path with all dependencies removed. 
