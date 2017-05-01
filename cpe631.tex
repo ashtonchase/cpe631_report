@@ -581,18 +581,18 @@ We ran into difficulties when developing software for targeting the custom copro
 Throughout this process, we experienced success; however, we experienced even more failures. We note these so as not to disguise, but to bring forward issues with the system, so that follow-on efforts might not be able to resolve them, or at least be aware of them.
 
 \subsubsection{Custom Opcodes}
-As mentioned previously, we were unsuccessful in utilizing custom opcodes, event those designed as pre-planned custom opcodes. 
+As mentioned previously, we were unsuccessful in utilizing custom opcodes, even those designed as pre-planned custom opcodes. While we were finally able to compile programs using the pseudo opcodes technique, the proxy kernel would not allow the execution of those instructions. They were designated as illegal opcodes. We suspect the proxy kernel would need to be recompiled to allow these instructions. 
 
 \subsubsection{Deploying Linux}
 Through multiple paths we were not able to rebuild GNU/Linux and execute it on the processor. This included both on the development board and the Spike simulator. To give background to this, The Berkeley Bootloader (BBL), which is found in the riscv-pk repository\cite{pk}, is an executable that is used to load in an ELF file into the processor. Most notably, this is used to boot GNU/Linux. When compiling the BBL, the Linux ELF file must be specified, otherwise and dummy ELF file is included. The output of the BBL build process is a single executable that contains the kernel.
 
-We were successful in building the Linux kernel using the riscv-linux repository\cite{linux}. Additionally, we were successful in building a GNU/Linux distribution using the Yocto Pocky and the recipes provided in riscv-poky\cite{poky}. For poky, we validated the build using the Spike simulator and BBL that is compiled at alongside the kernel Poky, along with the OS. <MORE TO COME> 
+We were successful in building the Linux kernel using the riscv-linux repository\cite{linux}. Additionally, we were successful in building a GNU/Linux distribution using the Yocto Pocky and the recipes provided in riscv-poky\cite{poky}. For Poky, we validated the build using the Spike simulator and BBL that is compiled at alongside the kernel. Unfortunately, moving that working configuration of the BLL and the kernel image and rootfs to the SD card did not yield success. Reflecting more on this configuration, it appears that version of the BBL does not require the kernel to be compiled into it. It seems to be an argument to it.
 
-
-\subsubsection{Custom Opcodes}
+\subsubsection{AXI Peripherals}
+We were not able to access a memory mapped I/O device. In this case a GPIO peripheral. Our test code was written to directly read and write to a pointer-address location (0x4000 0000). Yet again, the proxy kernel reported a segfault when reaching this step of the program. This restriction could be removed with recompilation of the proxy kernel, but this is only speculation.
 
 \section{Document Results}
-For documentation , we are providing an Oracle VMWare disk image and three tutorials to reach each of the three goals listed above using the virtual machine provided. The disk image is an Ubuntu 16.04 distribution with all the required repositories and examples necessary to replicate our goals. We felt this was the best approach for allowing others to verify and replicate our results. Additionally, instructions for the virtual machine getting a new virtual machine up and running using the virtual disk provided. While this will not provided the fastest avenue for building the different items required, it provided a path with all dependencies removed. 
+For documentation , we are providing an Oracle VMWare disk image to reach each of the three goals listed above using the virtual machine provided. The disk image is an Ubuntu 16.04 distribution with all the required repositories and examples necessary to replicate our goals. We felt this was the best approach for allowing others to verify and replicate our results. Additionally, instructions for the virtual machine getting a new virtual machine up and running using the virtual disk provided. While this will not provided the fastest avenue for building the different items required, it provided a path with all dependencies removed. 
 
 
 % An example of a floating figure using the graphicx package.
