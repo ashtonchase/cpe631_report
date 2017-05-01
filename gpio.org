@@ -1,4 +1,4 @@
-#+TITLE: Adding A GPIO to the Rocket Core on the Zedboard
+#+TITLE: Adding GPIO  to the Rocket Core on the Zedboard
 #+AUTHOR: Ashton Johnson & Ian Swepston
 #+OPTIONS: toc:nil
 #+STARTUP: showall
