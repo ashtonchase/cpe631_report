@@ -464,17 +464,15 @@ RISC-V, ISA, Zedboard, Zynq, Rocket-Chip
 The goals of our project are to investigate the source material provided by UC Berkeley's Rocket Chip Generator. Specifically, we will attempt to replicate the successes of those listed in the fpga-zynq \cite{fgpa-zynq} repository. Goals are listed in order or complexity, but also different layers of the supplied design. 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
-
-\subsubsection{Load Prebuilt Image}
-
-\subsubsection{Modify FPGA Project}
-
-\subsubsection{Modify RISC-V ISA}
-
-\subsubsection{Document Results}
+\begin{itemize}
+\item{Load Prebuilt Image}%TODO determine to to remove colons generated
+\item{Modify FPGA Project}
+\item{Modify RISC-V ISA}
+\item{Document Results}
+\end{itemize}
 
 \section{RISC-V Overview}
-RISC-V is an open risc instruction set architecture (ISA) commissioned in 2010 by a research team at UC Berkeley [citation needed]. The stated goal of the team was to create a free and open ISA for commercial, educational, and open source settings. RISC-V is under the BSD (Berkeley Software Distribution) Licence, which is similar to the LGPL and is governed by the RISC-V foundation. The foundation is intended to maintain the ISA in the long term and guide it toward being an industry standard.\newline
+RISC-V is an open risc instruction set architecture (ISA) commissioned in 2010 by a research team at UC Berkeley \cite{Waterman:EECS-2016-118}. The stated goal of the team was to create a free and open ISA for commercial, educational, and open source settings. RISC-V is under the BSD (Berkeley Software Distribution) Licence, which is similar to the LGPL and is governed by the RISC-V foundation. The foundation is intended to maintain the ISA in the long term and guide it toward being an industry standard.\newline
 RISC-V is not the first attempt at an open ISA. There have been others, but RISC-V appears to be positioned to succeed where others failed. The RISC-V foundation is important. They can act in the same way a company, like ARM Holdings, and will continue to improve the ISA, but will not monetizing it. Free hardware designs are also helpful. Other open ISAs have failed because they were impractical to implement. Potential adopters needed to either design their own cores or try to implement untested designs. Finally, educators are eager to adopt this ISA. The possibility of free-to-use ISA and hardware designs would allow us to use real assembly and real hardware to teach architecture. This would create demand and would flood the design world with scientists and engineers that know the ISA and will choose to use it due to familiarity.
 
 % Generates some bullet points
@@ -493,12 +491,12 @@ RISC-V is not the first attempt at an open ISA. There have been others, but RISC
 \end{itemize}
 
 \section{Pre-Built Image}
-It is possible to load a pre-built RISC-V core design onto a Xilinx Zedboard. This is a basic design that allows us the toolchain to be tested and allows for the execution of benchmarks. This configuration was investigated and a simple benchmark was compiled using the toolchain and run on the core. 
+It is possible to load a pre-built RISC-V core design onto a Xilinx Zedboard. This is a basic design that allows the toolchain to be tested and allows for the execution of benchmarks or user programs. This configuration was investigated and a simple program was compiled using the toolchain and run on the core. We were able to compile and run the basic matrix multiplication program we developed in the early part of the CPE 631 class.
 
 \newline [TALK ABOUT MATRIX/MATRIX MULTIPLICATION?]
 
 \subsection{Image Makeup}
-The pre-built configuration is a simple design that can be instantiated on the Zedboard. It is a single core design for the purpose of rapidly testing and running RISC-V in hardware. The basic design is an RV64G core. This means that it is a RISC-V (RV) 64 bit core the General Purpose (G) extension set. The general purpose set can be thought of as a ``normal'' processor. We will cover the details in the Rocket Chip Generator section later. \newline
+The pre-built configuration is a simple design that can be instantiated on the Zedboard. It is a single core design for the purpose of rapidly testing and running RISC-V in hardware. The basic design is an RV64G core. This means that it is a RISC-V (RV) 64 bit core servicing the General Purpose (G) extension set. The general purpose set can be thought of as a ``normal'' processor. We will cover the details in the Rocket Chip Generator section later. \newline
 Surrounding the core in this design is a split L1 cache for instructions and data. These caches are designed to be simple and save FPGA space. Both are 4-way set associative with 64 sets per cache and 8 TLB entries. They are non-error correcting, use the random policy for replacement, and do not use scratchpad memory to store calculations. \newline
 This design does not contain an L2 cache due to size and complexity, so after L1, the processor must go directly to main memory. For main memory, the processor splits the 512MB of on board Zedboard DDR memory in half, utilizing 256MB for its needs.
 
@@ -509,6 +507,7 @@ To complete this goal, cross-compilation was necessary. To allow for this, Berke
 The executable for spike is built here. Spike is the RISC-V open source cross-platform simulator designed by Berkeley. It allows for execution of RISC-V binaries on an arbitrary platform through emulation. This is paired with a program called pk (proxy kernel). pk is designed to format and provide RISC-V instructions to either a kernel-less core or the spike program for execution and to receive and handle output from the core. \newline
 
 \subsubsection{Benchmarks}
+
 Embedded in this repository are a series of RISC-V benchmarks compiled and ready to be executed on a system with a RISC-V core. 
 
 \section{THESE THINGS NEED A GOOD PLACE}
