@@ -454,7 +454,7 @@ RISC-V, ISA, Zedboard, Zynq, Rocket-Chip
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
 \IEEEPARstart{T}{he} RISC-V open instruction set architecture commissioned in 2010 has been making waves in the in world of open hardware within both the academic community and industry. As students pursuant of masters degrees in computer engineering, we investigate the RISC-V processor through venues that we are already familiar with: Field Programmable Gate Arrays (FGPAs).
-\newline The Rocket-Chip generator allows for developing a system-on-chip (SOC) design rapidly.\cite{Asanović:EECS-2016-17}. We utilize the fpga-zynq\cite{fpga-zynq} repository to target a Zynq-based Zedboard FPGA development platform to instantiate and test out a RISC-V implementation.
+\newline The Rocket-Chip generator allows for developing a system-on-chip (SOC) design rapidly.\cite{Asanović:EECS-2016-17}. We utilize the fpga-zynq \cite{fpga-zynq} repository to target a Zynq-based Zedboard FPGA development platform to instantiate and test out a RISC-V implementation.
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
 
@@ -462,7 +462,7 @@ RISC-V, ISA, Zedboard, Zynq, Rocket-Chip
 %\hfill August 26, 2015
 
 \section{Project Goals}
-The goals of our project are to investigate the source material provided by UC Berkeley's Rocket Chip Generator. Specifically, we will attempt to replicate the successes of those listed in the fpga-zynq \cite{fgpa-zynq} repository. Goals are listed in order or complexity, but also different layers of the supplied design. 
+The goals of our project are to investigate the source material provided by UC Berkeley's Rocket Chip Generator. Specifically, we will attempt to replicate the successes of those listed in the fpga-zynq \cite{fpga-zynq} repository. Goals are listed in order or complexity, but also different layers of the supplied design. 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
 \begin{itemize}
@@ -492,26 +492,29 @@ RISC-V is not the first attempt at an open ISA, but RISC-V appears to be positio
 \end{itemize}
 
 \section{Pre-Built Image}
+<<<<<<< HEAD
 It is possible to load a pre-built RISC-V core design onto a Xilinx Zedboard. This is a basic design that allows the toolchain to be tested and allows for the execution of benchmarks or user programs. This configuration was investigated and a simple program was compiled using the toolchain and run on the core. We were able to compile and run the basic matrix multiplication program we developed in the early part of the CPE 631 class.
+=======
+It is possible to load a pre-built RISC-V core design onto a Xilinx Zedboard. The image is provided in the fpga-zynq repository. This image contains a basic implementation that allows the toolchain to be tested and for the execution of user programs, such as benchmarks. This configuration was investigated and a simple program was compiled using the toolchain and was executed on the core. We were able to compile and run the basic matrix multiplication program we developed in the early part of the CPE 631 class. It should be noted that this program utilized double precision floating points numbers.
+>>>>>>> 2a93793853b591fd22a0a11ffc86207910e8ae2e
 
 \subsection{Image Makeup}
 The pre-built configuration is a simple design that can be instantiated on the Zedboard. It is a single core design for the purpose of rapidly testing and running RISC-V in hardware. The basic design is an RV64G core. This means that it is a RISC-V (RV) 64 bit core servicing the General Purpose (G) extension set. The general purpose set can be thought of as a ``normal'' processor. We will cover the details in the Rocket Chip Generator section later. \newline
 Surrounding the core in this design is a split L1 cache for instructions and data. These caches are designed to be simple and save FPGA space. Both are 4-way set associative with 64 sets per cache and 8 TLB entries. They are non-error correcting, use the random policy for replacement, and do not use scratchpad memory to store calculations. \newline
-This design does not contain an L2 cache due to size and complexity, so after L1, the processor must go directly to main memory. For main memory, the processor splits the 512MB of on board Zedboard DDR memory in half, utilizing 256MB for its needs.
+This design does not contain an L2 cache due to size and complexity, so after L1, the processor must go directly to main memory. For main memory, the design splits the 512MB of on-board Zedboard DDR memory in half, utilizing 256MB for its needs and the other half allocated to the ARM cores in the Zynq.
 
 \subsection{Toolchain}
-To complete this goal, cross-compilation was necessary. To allow for this, Berkeley has designed and released the sources for RISC-V variants of the LLVM and GNU toolchains. These are included in the RISC-V repository under rocket-chip/riscv-tools. They are available as a standalone or as a link within the fpga-zynq project for Zynq boards. The toolchains can be installed several ways, but for performance and simple installation, we recommend using the provided build scripts in the riscv-tools directory. Instructions for installing the toolchain can be found in [Where exactly? Should we write and append, do it inline, or link theirs?]. Once built on an x86 system, the tools are named like: riscv64-unknown-elf-g++ and can be installed anywhere on that system. These toolchains appear to be complete and operate identically to their mainstream versions. As an example, compilation can be completed using the normal formats: [path to tools]/riscv64-unknown-elf-g++ main.cpp -o executable. \newline \newline While the toolchains are being built, some additional useful tools are constructed:\newline
+To complete this goal, cross-compilation was necessary. For this, Berkeley has developed and released the sources for RISC-V variants of the LLVM and GNU toolchains. These are included in the RISC-V repository under fpga-zynq/rocket-chip/riscv-tools. They are available as a standalone or as a link within the fpga-zynq project for Zynq boards. The toolchains can be installed several ways, but for performance and simple installation, we recommend using the provided build scripts in the riscv-tools directory. Instructions for installing the toolchain can be found in risc-gnu-toolchain repository \cite{toolchain}. Once built on the native system, the tools are named like: riscv64-unknown-elf-g++ and can be installed anywhere on that system. These toolchains appear to be complete and operate identically to their mainstream versions. As an example, compilation can be completed using the normal formats: [path to tools]/riscv64-unknown-elf-g++ main.cpp -o executable. \newline \newline While the toolchains are being built, some additional useful tools are constructed:\newline
 
 \subsubsection{Spike and pk}
 The executable for spike is built here. Spike is the RISC-V open source cross-platform simulator designed by Berkeley. It allows for execution of RISC-V binaries on an arbitrary platform through emulation. This is paired with a program called pk (proxy kernel). pk is designed to format and provide RISC-V instructions to either a kernel-less core or the spike program for execution and to receive and handle output from the core. \newline
 
 \subsubsection{Benchmarks}
-
 Embedded in this repository are a series of RISC-V benchmarks compiled and ready to be executed on a system with a RISC-V core. 
 
 \section{FPGA Project}
-Using the supplied makefiles, a Xilinx Vivado project was generated along with the default Rocket Chip configuration. With this we investigated the design that was targeting the Zedboard.
-On the Zedboard, the Rocket core interfaces with the ARM processing system via two AXI interfaces. One AXI interace is provides the ARM the ability to load user executibles into the rocket core. The other AXI interface provides the rocket core access to the DRAM that is on the zedboard. This utilized on of th AXI-HP ports on the Zynq Processing Module that is instantiated in a Block Diagram.
+Using the supplied makefiles, a Xilinx Vivado project was generated according to the the default Rocket Chip configuration. From this,  we investigated the design that was targeting the Zedboard.
+On the Zedboard, the Rocket core interfaces with the ARM processing system via two AXI interfaces. One AXI interace is provides the ARM the ability to load user executibles into the rocket core. The other AXI interface provides the rocket core access to the DRAM that is on the zedboard. The memory side interface utilizes one of th AXI-HP ports on the Zynq Processing Module that is instantiated in a Block Diagram.
 
 \begin{figure} %reference https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions for [!h] options on placing the figures
 \centering
@@ -520,10 +523,10 @@ On the Zedboard, the Rocket core interfaces with the ARM processing system via t
 \caption{Design with GPIO peripheral.}
 \label{fig:gpio}
 \end{figure}
-In Fig~\ref{fig:gpio}, we attached a Xilinx supplied AXI GPIO IP core. At the time, this method seemed to be the easiest for making a peripheral available to the RISC-V processor. The GPIO could then be accessed as a memory-mapped IO device using an address generated by the Xilinx block diagram. While we were successful in generating a new bitstream for the zedboard, we were not successful in actually manipulating the GPIO device. When running an executable using the Proxy Kernel\cite{pk}, an error is reported of a user store segfault at the address of the GPIO. This result was also confirmed using the Spike simulator. Upon researching further if there were similar efforts to attach peripherals to the processor, we discovered that the lowRISC project provides an exampled on how peripherals should be added\cite{lowrisc}. In the diagrams they provided, we now understand that peripherals should no be routed via cachable channels.
+In Fig~\ref{fig:gpio}, we attached a Xilinx supplied AXI GPIO IP core. At the time, this method seemed to be the easiest for making a peripheral available to the RISC-V processor. The GPIO could then be accessed as a memory-mapped IO device using an address generated by the Xilinx block diagram. While we were successful in generating a new bitstream for the zedboard, and loading the design onto the board, we were not successful in actually manipulating the GPIO device. When running an executable using the Proxy Kernel\cite{pk}, an error is reported of a 'user store segfault' at the address of the GPIO. This result was also confirmed using the Spike simulator. Upon researching further, there are similar efforts to attach peripherals to the processor as you might expect. We discovered that the lowRISC project provides an exampled on how peripherals should be added\cite{lowrisc}. Using the diagrams they provided, we now understand that peripherals should be connected via non-cachable channels. This would require a unique AXI based bus from the processor that doesn't route through the memory interconnects from the L1 cache to the main memory. We were not able to pursue this further given the time 
 
 \section{Rocket Chip Generator}
-In order to rapidly produce prototypes of their hardware and to make RISC-V more accessible, the Berkeley team has created a system called the Rocket Chip generator. By using this tool, a hardware architect can have a RISC-V core up and running within minutes of downloading the appropriate repository and can begin to make changes as they are needed.
+In order to rapidly produce prototypes of a design and to make RISC-V more accessible, the Berkeley team has created a system called the Rocket Chip generator. By using this tool, a hardware architect can have a RISC-V core up and running within minutes of downloading the appropriate repository and can begin to make changes as they are needed.
 
 \subsection{Chisel}
 The Rocket Chip generator relies on a Berkeley developed language extension of the Scala programming language, called Chisel\cite{bachrach2012chisel}. Using Chisel, functional blocks of hardware are described for all the components required in the rocket core. Chisel is a new breed of hardware description language. Compared to traditional HDLs, such as Verilog or VDHL, Chisel can be considered a higher level language. It is syntactically similar to Java and employs many Object Oriented principles such as classes, inheritance and polymorphism. Within Chisel, hardware configurations are developed by instantiating base modules, which are treated like objects, and then including options by overriding the default parameters of each module. The hardware is described and connected hierarchically and upon evaluation the Chisel code generates Verilog which may be used in synthesis.
@@ -532,7 +535,7 @@ The Rocket Chip generator relies on a Berkeley developed language extension of t
 \centering
 \includegraphics[width=9cm ]{./graphics/ExampleRocketChip.png}
 \centering
-\caption{Components that may be generated by the Rocket Chip generator}
+\caption{Components that may be generated by the Rocket Chip generator\cite{Asanović:EECS-2016-17}}
 \label{fig:rocketchip}
 \end{figure}
 
