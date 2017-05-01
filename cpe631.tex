@@ -482,8 +482,10 @@ RISC-V is not the first attempt at an open ISA. There have been others, but RISC
 \begin{itemize}
 \item BSD License:\newline
   Allows proprietary derivative work
-\item Microarchitecture-Agnostic:\newline
-  The ISA is independent of the application workload. It can be scaled to cover everything from microcontrollers to warehouse-scale servers.
+\item Scaleability:\newline
+  The ISA is largely microarchitecture-agnostic and flexible enough for most application workloads. It can be scaled to cover everything from microcontrollers to warehouse-scale servers.
+\item Code Compression:\newline
+  The ISA supports compression of its binary programs down to 16 bits per command without losing core functionality. This allows for significant reductions in code size for small scale embedded devices.
 \item 128 Bit:\newline
   Comes with fully-functional 128-bit design. This does not appear to be commercially supported and may be of use soon in large-scale cloud computing applications.
 \item Software Support:\newline
@@ -496,7 +498,7 @@ It is possible to load a pre-built RISC-V core design onto a Xilinx Zedboard. Th
 \newline [TALK ABOUT MATRIX/MATRIX MULTIPLICATION?]
 
 \subsection{Image Makeup}
-The pre-built configuration is a simple design that can be instantiated on the Zedboard. It is a single core design for the purpose of rapidly testing and running RISC-V in hardware. The basic design is an RV64G core. This means that it is a RISC-V (RV) 64 bit core the General Purpose (G) extension set. The general purpose set can be thought of as a ``normal'' processor. We will cover the details in the [WHAT SECTION? RC Generator?] later. \newline
+The pre-built configuration is a simple design that can be instantiated on the Zedboard. It is a single core design for the purpose of rapidly testing and running RISC-V in hardware. The basic design is an RV64G core. This means that it is a RISC-V (RV) 64 bit core the General Purpose (G) extension set. The general purpose set can be thought of as a ``normal'' processor. We will cover the details in the Rocket Chip Generator section later. \newline
 Surrounding the core in this design is a split L1 cache for instructions and data. These caches are designed to be simple and save FPGA space. Both are 4-way set associative with 64 sets per cache and 8 TLB entries. They are non-error correcting, use the random policy for replacement, and do not use scratchpad memory to store calculations. \newline
 This design does not contain an L2 cache due to size and complexity, so after L1, the processor must go directly to main memory. For main memory, the processor splits the 512MB of on board Zedboard DDR memory in half, utilizing 256MB for its needs.
 
@@ -510,9 +512,6 @@ The executable for spike is built here. Spike is the RISC-V open source cross-pl
 Embedded in this repository are a series of RISC-V benchmarks compiled and ready to be executed on a system with a RISC-V core. 
 
 \section{THESE THINGS NEED A GOOD PLACE}
-
-\subsubsection{Extensions}
-Extensions are a mechanism used by the chip generator to allow rocket cores to be as simple or as complex as needed to complete tasks. For convenience many commonly used extensions are available to designers pre-written. The ``G'' extension is a combination of the extension for Integer (I), Multiply/Divide (M), Atomic (A), Floating Point (F), and Double Precision (D). This could be known as RV64IMAFD, but because these are so common, they are combined as G. 
 
 \section{FPGA Project}
 Using the supplied makefiles, a Xilinx Vivado project was generated along with the default Rocket Chip configuration. With this we investigated the design that was targeting the Zedboard.
@@ -542,12 +541,13 @@ The Rocket Chip generator relies on a Berkeley developed language extension of t
 \end{figure}
 
 \subsection{Generation Options}
-The Rocket Chip Generator is intended to be a do-it-all hardware design tool for hardware architects. As such, it is very flexible. In Fig~\ref{fig:rocketchip},
+The Rocket Chip Generator is intended to be a do-it-all hardware design tool for hardware architects. As such, it is very flexible. Fig~\ref{fig:rocketchip} is an example of an SoC created by the Rocket Chip generator and it demonstrates the power of the tool's sub-generators working together. For example, this instance could be generated and contains two separate self contained procesors connected by an interconnection network and L2 cache plus an AXI4 Crossbar with peripherals like a memory controller attached. The processor in Tile1 contains a small coprocessor and Berkeleys custom-made out of order RISC-V core BOOM and Tile2 has a general Rocket core for basic operations and a larger coprocessor.
 
-
+\subsection{Extensions}
+Extensions are a mechanism used by the chip generator to allow easy manipulation of the core and control the supported section of the instruction set. Rocket cores to be as simple or as complex as needed to complete tasks. Much of this complexity is due to the inclusion and exclusion of extensions. For convenience, many commonly used extensions are available to designers pre-written within the generator. The ``G'' extension is a combination of the extension for Integer (I), Multiply/Divide (M), Atomic (A), Floating Point (F), and Double Precision (D). This could be known as RV64IMAFD, but because these are so common, they are combined as G and referenced as RV64G. 
 
 \section{Rocket Chip Modification}
-Using chisel we were successfully in modifying the number of cores instantiated in the design. This can easily be performed by adding the following bold text .../rocketchip/Configs.scala:
+The first step in understanding the generator is attempting to modify the design. This was our goal. Using chisel we successfully modified the number of cores instantiated in the design. This can easily be performed by modifying the following text in the file [path-to-repo]/rocket-chip/src/main/scala/rocketchip/Configs.scala to include the bolded text:
 \newline
 \newline
 \tt{class DefaultFPGAConfig extends \textbf{++ new WithNCores(2)} Config(new FPGAConfig ++ new BaseConfig)}\rm{}
@@ -557,13 +557,13 @@ While generating a dual core configuration was simple, it was not we could not i
 \subsection{LUT Utilization}
 The processing coreplexes take up around 60 percent of the device LUT utilization. Therefore two core utilize 120 percent. Using a larger device could mitigate this problem.
 \subsection{Block RAM Utilization}
-When instantiating two or more cores, an L2 cache is automatically inferred. This is quite convenient; however, the default L2 instantiation allocates 2048KB of memory. This required around 1,200 percent of Block RAM utilization! To resolve this, we modified the previous snipped by adding the follow bold text:
+When instantiating two or more cores, an L2 cache is automatically inferred. This is quite convenient; however, the default L2 instantiation allocates 2048KB of memory. This required around 1,200 percent of Block RAM utilization! To resolve this, we modified the previous snippet by adding the follow bold text:
 \newline
 \newline
 \tt{class DefaultFPGAConfig extends ++ new WithNCores(2) \textbf{+ new WithL2Capacity(256)} Config(new FPGAConfig ++ new BaseConfig)}\rm{}
 \newline
 \newline
-To faciliate testing out the different configurations, we defined several classes beyond the \tt{DefaultFPGAConfig}\rm{} that can be instantiated. There names are self-explanatory:
+To faciliate testing out the different configurations, we defined several classes beyond the \tt{DefaultFPGAConfig}\rm{} that can be instantiated. Their names are self-explanatory:
 \newline
 \newline
 \tt{
@@ -571,8 +571,7 @@ class DefaultFPGARoccConfig \newline
 class DefaultFPGA32KBL2Config \newline
 class DefaultFPGA256KBL2Config \newline
 class DefaultFPGADualCoreConfig}\rm{}
-\newline
-\newline
+
 \section{RoCC Accelerator}
 The Rocket-Chip generator provides a framework for developeing custom co-processors that are housed in the processing coreplex, allowing for low latency access to the co-processor. These are the Rocket Custom Coprocessor (RoCC). These coprocessors utilize reserved opcodes in the instruction set. To get started with the accelerators, three example coprocessors are already defined in the repository. These are defined down in .../rocket/rocc.Scala. We were sucessful in instantiating these cores, and provided \tt{class DefaultFPGARoccConfig}\rm{} to make these easier to implmement. Resource utilization of the custom coprocessors is negligible.
 
