@@ -511,8 +511,6 @@ The executable for spike is built here. Spike is the RISC-V open source cross-pl
 \subsubsection{Benchmarks}
 Embedded in this repository are a series of RISC-V benchmarks compiled and ready to be executed on a system with a RISC-V core. 
 
-\section{THESE THINGS NEED A GOOD PLACE}
-
 \section{FPGA Project}
 Using the supplied makefiles, a Xilinx Vivado project was generated along with the default Rocket Chip configuration. With this we investigated the design that was targeting the Zedboard.
 On the Zedboard, the Rocket core interfaces with the ARM processing system via two AXI interfaces. One AXI interace is provides the ARM the ability to load user executibles into the rocket core. The other AXI interface provides the rocket core access to the DRAM that is on the zedboard. This utilized on of th AXI-HP ports on the Zynq Processing Module that is instantiated in a Block Diagram.
