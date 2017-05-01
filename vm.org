@@ -15,20 +15,20 @@
 
 
 * Purpose
-This document describes the general structure of the provided Virtual Machine.  This virutal machine is to serve as a RISC-V development enviroment. 
+This document describes the general structure of the provided Virtual Machine.  This virtual machine is to serve as a RISC-V development environment. 
 * Prerequisites 
 The image provided is to be used with [[https://www.virtualbox.org/][Oracle Virtual Box]].
-We alse recommend installing the [[http://download.virtualbox.org/virtualbox/5.1.22/Oracle_VM_VirtualBox_Extension_Pack-5.1.22-115126.vbox-extpack][Oracle VM VirtualBox Extension Pack]] on the host machine, though this is not required. 
+We also recommend installing the [[http://download.virtualbox.org/virtualbox/5.1.22/Oracle_VM_VirtualBox_Extension_Pack-5.1.22-115126.vbox-extpack][Oracle VM VirtualBox Extension Pack]] on the host machine, though this is not required. 
   
 * What's Included
-The following items have already been installed on the virtual mahcine:
+The following items have already been installed on the virtual machine:
 - Ubuntu 16.04
 - Java JDK
 - Scala Build Tool (SBT) (available via apt)
 - Xilinx Vivado 2016.2
 - RISC-V GNU toolchain, located under /opt/riscv/
 
-The follwing repositories are installed in the home folder:
+The following repositories are installed in the home folder:
 - [[https://github.com/ucb-bar/fpga-zynq][fpga-zynq]] and all sub-repos
 - [[https://github.com/riscv/riscv-linux][riscv-linux]]
 - [[https://github.com/riscv/riscv-poky][riscv-poky]]
