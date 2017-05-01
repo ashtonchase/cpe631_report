@@ -355,6 +355,7 @@
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
 \title{Investigation of RISC-V ISA\\using Rocket-Chip}
+
 %
 %
 % author names and IEEE memberships
@@ -416,7 +417,7 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-We utilize repositories provided by University of California, Berkeley to learn more about the RISC-V processor. 
+RISC-V is a new and open RISC instruction set architecture (ISA). There are a series of repositories provided by The University of California, Berkeley to support the ISA help to design hardware. In this paper we investigate these tools and use them to learn more about RISC-V and RISC-V processors. 
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -472,8 +473,8 @@ The goals of our project are to investigate the source material provided by UC B
 \end{itemize}
 
 \section{RISC-V Overview}
-RISC-V is an open risc instruction set architecture (ISA) commissioned in 2010 by a research team at UC Berkeley \cite{Waterman:EECS-2016-118}. The stated goal of the team was to create a free and open ISA for commercial, educational, and open source settings. RISC-V is under the BSD (Berkeley Software Distribution) Licence, which is similar to the LGPL and is governed by the RISC-V foundation. The foundation is intended to maintain the ISA in the long term and guide it toward being an industry standard.\newline
-RISC-V is not the first attempt at an open ISA. There have been others, but RISC-V appears to be positioned to succeed where others failed. The RISC-V foundation is important. They can act in the same way a company, like ARM Holdings, and will continue to improve the ISA, but will not monetizing it. Free hardware designs are also helpful. Other open ISAs have failed because they were impractical to implement. Potential adopters needed to either design their own cores or try to implement untested designs. Finally, educators are eager to adopt this ISA. The possibility of free-to-use ISA and hardware designs would allow us to use real assembly and real hardware to teach architecture. This would create demand and would flood the design world with scientists and engineers that know the ISA and will choose to use it due to familiarity.
+RISC-V is an open risc instruction set architecture (ISA) commissioned in 2010 by a research team at UC Berkeley \cite{Waterman:EECS-2016-118}. The stated goal of the team was to create a free and open ISA for commercial, educational, and open source settings. RISC-V is governed by the RISC-V foundation and is under the BSD (Berkeley Software Distribution) Licence, which is similar to the LGPL. The foundation is intended to maintain the ISA in the long term and guide it toward being an industry standard.\newline
+RISC-V is not the first attempt at an open ISA, but RISC-V appears to be positioned to succeed where others failed. The RISC-V foundation is important. They can act in the same way a company, like ARM Holdings, and will continue to improve the ISA, but will not monetizing it. Free hardware designs are also helpful. Other open ISAs have failed because they were impractical to implement. Potential adopters needed to either design their own cores or try to implement untested designs. Finally, educators are eager to adopt this ISA. The possibility of free-to-use ISA and hardware designs would allow us to use real assembly and real hardware to teach architecture. This would create demand and would flood the design world with scientists and engineers that know the ISA and will choose to use it due to familiarity.
 
 % Generates some bullet points
 \subsection{Design Benefits}
@@ -492,8 +493,6 @@ RISC-V is not the first attempt at an open ISA. There have been others, but RISC
 
 \section{Pre-Built Image}
 It is possible to load a pre-built RISC-V core design onto a Xilinx Zedboard. This is a basic design that allows the toolchain to be tested and allows for the execution of benchmarks or user programs. This configuration was investigated and a simple program was compiled using the toolchain and run on the core. We were able to compile and run the basic matrix multiplication program we developed in the early part of the CPE 631 class.
-
-\newline [TALK ABOUT MATRIX/MATRIX MULTIPLICATION?]
 
 \subsection{Image Makeup}
 The pre-built configuration is a simple design that can be instantiated on the Zedboard. It is a single core design for the purpose of rapidly testing and running RISC-V in hardware. The basic design is an RV64G core. This means that it is a RISC-V (RV) 64 bit core servicing the General Purpose (G) extension set. The general purpose set can be thought of as a ``normal'' processor. We will cover the details in the Rocket Chip Generator section later. \newline
@@ -589,7 +588,7 @@ We were successful in building the Linux kernel using the riscv-linux repository
 We were not able to access a memory mapped I/O device. In this case a GPIO peripheral. Our test code was written to directly read and write to a pointer-address location (0x4000 0000). Yet again, the proxy kernel reported a segfault when reaching this step of the program. This restriction could be removed with recompilation of the proxy kernel, but this is only speculation.
 
 \section{Document Results}
-For documentation , we are providing an Oracle VMWare disk image to reach each of the three goals listed above using the virtual machine provided. The disk image is an Ubuntu 16.04 distribution with all the required repositories and examples necessary to replicate our goals. We felt this was the best approach for allowing others to verify and replicate our results. Additionally, instructions for the virtual machine getting a new virtual machine up and running using the virtual disk provided. While this will not provided the fastest avenue for building the different items required, it provided a path with all dependencies removed. 
+For documentation we are providing an Oracle VMWare disk image to reach each of the three goals listed above using the virtual machine provided. The disk image is an Ubuntu 16.04 distribution with all the required repositories and examples necessary to replicate our goals. We felt this was the best approach for allowing others to verify and replicate our results. Additionally, instructions for the virtual machine getting a new virtual machine up and running using the virtual disk provided. While this will not provided the fastest avenue for building the different items required, it provided a path with all dependencies removed. 
 
 
 % An example of a floating figure using the graphicx package.
@@ -686,11 +685,14 @@ For documentation , we are providing an Oracle VMWare disk image to reach each o
 % footnotes above bottom floats. This can be corrected via the
 % \fnbelowfloat command of the stfloats package.
 
-
-
-
 \section{Conclusion}
-The conclusion goes here.
+RISC-V is an open ISA designed to break open the world computer architecture. It is making the push to be the first successful open ISA. The ISA is surrounded by many advantages including a software toolchain and a core design tool to generate inexpensive and reliable hardware. This paper documents our investigation into this ISA and its supporting tools. During the course of the paper we have discussed how we tested these tools utilizing the existing documentation from UC Berkeley for the purpose of improving upon it and understanding RISC-V.
+
+We were able to load and test the pre-built designs in their repositories as well as complete their examples. We were also able to learn about the Rocket Chip generator tool and Chisel, its supporting language. Using these we were able to build a basic rocket core from source. Also using the generator, we made modifications to the core design and configuration and synthesized these cores. We also investigated adding a coprocessor (called a RoCC) and how to add it to a core design. We were able to synthesize this as well. 
+
+We had a few failures along the way. Many of these were due to the state of the repositories being in flux or due to venturing into underdocumented or undocumented pieces of the Rocket Chip generator and RISC-V. We believe that these failures can bring to light information that needs future investigation and documentation. 
+
+It is these authors opinion that RISC-V is poised for success. It is at a critical time in which it is being presented to the world, picked apart, and tested. As such we feel that researching and understanding the ISA and the tools that have been created to support it will help expand it use and usability.
 
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
@@ -705,16 +707,6 @@ The conclusion goes here.
 % \subsection or using \label (\appendices by itself
 % starts a section numbered zero.)
 %
-
-
-\appendices
-\section{Proof of the First Zonklar Equation}
-Appendix one text goes here.
-
-% you can choose not to have a title for an appendix
-% if you want by leaving the argument blank
-\section{}
-Appendix two text goes here.
 
 
 % use section* for acknowledgment
